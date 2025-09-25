@@ -1,0 +1,393 @@
+:root {
+    --primary-white: #ffffff;
+    --light-gray: #f5f5f5;
+    --medium-gray: #e0e0e0;
+    --dark-gray: #9e9e9e;
+    --text-color: #333333;
+    --accent-color: #ff5252;
+    --success-color: #4caf50;
+    --india-orange: #FF9933;
+    --india-green: #138808;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--primary-white);
+    color: var(--text-color);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    padding-bottom: 80px;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.india-flag {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.flag-stripe {
+    width: 150px;
+    height: 10px;
+}
+
+.flag-orange {
+    background-color: var(--india-orange);
+}
+
+.flag-white {
+    background-color: var(--primary-white);
+    border-top: 1px solid var(--medium-gray);
+    border-bottom: 1px solid var(--medium-gray);
+    position: relative;
+}
+
+.flag-green {
+    background-color: var(--india-green);
+}
+
+.ashoka-chakra {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid #000080;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ashoka-chakra::before {
+    content: "";
+    position: absolute;
+    width: 2px;
+    height: 8px;
+    background-color: #000080;
+}
+
+.header h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 5px;
+}
+
+.header p {
+    color: var(--dark-gray);
+    font-size: 1rem;
+}
+
+.sos-container {
+    display: flex;
+    justify-content: center;
+    margin: 30px 0;
+}
+
+.sos-button {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    font-size: 2.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 82, 82, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 15px rgba(255, 82, 82, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 82, 82, 0);
+    }
+}
+
+.sos-button:active {
+    transform: scale(0.95);
+}
+
+.sos-button i {
+    font-size: 3rem;
+    margin-bottom: 5px;
+}
+
+.status-message {
+    text-align: center;
+    margin: 20px 0;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: var(--light-gray);
+    color: var(--text-color);
+    font-size: 1rem;
+    display: none;
+}
+
+.status-message.active {
+    display: block;
+}
+
+.status-message.success {
+    background-color: rgba(76, 175, 80, 0.1);
+    color: var(--success-color);
+}
+
+.status-message.error {
+    background-color: rgba(255, 82, 82, 0.1);
+    color: var(--accent-color);
+}
+
+.sound-control {
+    display: flex;
+    justify-content: center;
+    margin: 15px 0;
+}
+
+.sound-toggle {
+    background-color: var(--light-gray);
+    border: 1px solid var(--medium-gray);
+    border-radius: 20px;
+    padding: 8px 15px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--text-color);
+}
+
+.sound-toggle i {
+    margin-right: 8px;
+}
+
+.sound-toggle.active {
+    background-color: var(--medium-gray);
+}
+
+.emergency-contacts {
+    margin-top: 30px;
+    background-color: var(--light-gray);
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.emergency-contacts h2 {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    color: var(--text-color);
+}
+
+.contact-list {
+    list-style: none;
+}
+
+.contact-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--medium-gray);
+}
+
+.contact-item:last-child {
+    border-bottom: none;
+}
+
+.contact-info {
+    display: flex;
+    align-items: center;
+}
+
+.contact-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--primary-white);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 15px;
+    color: var(--text-color);
+}
+
+.contact-name {
+    font-weight: 500;
+}
+
+.contact-number {
+    font-size: 0.9rem;
+    color: var(--dark-gray);
+}
+
+.call-button {
+    background-color: var(--primary-white);
+    border: 1px solid var(--medium-gray);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-color);
+    cursor: pointer;
+}
+
+.family-contact-section {
+    margin-top: 30px;
+    background-color: var(--light-gray);
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.family-contact-section h2 {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    color: var(--text-color);
+}
+
+.contact-input-group {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.contact-input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid var(--medium-gray);
+    border-radius: 8px 0 0 8px;
+    font-size: 1rem;
+    outline: none;
+}
+
+.add-contact-button {
+    background-color: var(--primary-white);
+    border: 1px solid var(--medium-gray);
+    border-left: none;
+    border-radius: 0 8px 8px 0;
+    padding: 0 15px;
+    color: var(--text-color);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.location-info {
+    margin-top: 30px;
+    background-color: var(--light-gray);
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.location-info h2 {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    color: var(--text-color);
+}
+
+.location-details {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.location-details i {
+    margin-right: 10px;
+    color: var(--dark-gray);
+    width: 20px;
+    text-align: center;
+}
+
+.location-text {
+    font-size: 0.95rem;
+    color: var(--text-color);
+}
+
+.device-info {
+    margin-top: 15px;
+}
+
+.device-info-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.update-location-btn {
+    background-color: var(--primary-white);
+    border: 1px solid var(--medium-gray);
+    border-radius: 8px;
+    padding: 10px 15px;
+    margin-top: 15px;
+    color: var(--text-color);
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.update-location-btn i {
+    margin-right: 8px;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    padding: 20px 0;
+    background-color: var(--primary-white);
+    border-top: 1px solid var(--medium-gray);
+}
+
+.footer p {
+    color: var(--dark-gray);
+    font-size: 0.9rem;
+}
+
+.footer i {
+    color: var(--accent-color);
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .sos-button {
+        width: 180px;
+        height: 180px;
+        font-size: 2rem;
+    }
+    
+    .sos-button i {
+        font-size: 2.5rem;
+    }
+}
