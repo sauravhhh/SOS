@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 </div>
                 <div>
-                    <button class="call-button" data-action="call" data-index="${index}" data-number="${contact}">
+                    <button class="call-button" data-action="call" data-number="${contact}">
                         <i class="fas fa-phone"></i>
                     </button>
                     <button class="call-button" data-action="delete" data-index="${index}">
@@ -109,6 +109,17 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         // Add event listeners to the dynamically created buttons
+        addContactButtonEventListeners();
+    }
+    
+    // Function to add event listeners to contact buttons
+    function addContactButtonEventListeners() {
+        // Remove existing event listeners to avoid duplicates
+        document.querySelectorAll('.call-button').forEach(button => {
+            button.removeEventListener('click', handleContactButtonClick);
+        });
+        
+        // Add new event listeners
         document.querySelectorAll('.call-button').forEach(button => {
             button.addEventListener('click', handleContactButtonClick);
         });
@@ -116,13 +127,17 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Function to handle contact button clicks
     function handleContactButtonClick(event) {
-        const action = event.currentTarget.getAttribute('data-action');
-        const index = parseInt(event.currentTarget.getAttribute('data-index'));
+        event.preventDefault(); // Prevent default behavior
+        event.stopPropagation(); // Stop event from bubbling up
+        
+        const button = event.currentTarget;
+        const action = button.getAttribute('data-action');
         
         if (action === 'call') {
-            const number = event.currentTarget.getAttribute('data-number');
+            const number = button.getAttribute('data-number');
             makeCall(number);
         } else if (action === 'delete') {
+            const index = parseInt(button.getAttribute('data-index'));
             removeFamilyContact(index);
         }
     }
@@ -168,10 +183,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Function to remove family contact
     function removeFamilyContact(index) {
-        familyContacts.splice(index, 1);
-        localStorage.setItem('familyContacts', JSON.stringify(familyContacts));
-        loadFamilyContacts();
-        showStatusMessage('Emergency contact removed', 'success');
+        if (confirm('Are you sure you want to remove this emergency contact?')) {
+            familyContacts.splice(index, 1);
+            localStorage.setItem('familyContacts', JSON.stringify(familyContacts));
+            loadFamilyContacts();
+            showStatusMessage('Emergency contact removed', 'success');
+        }
     }
     
     // Function to format phone number for display
@@ -289,15 +306,15 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Wait a bit for location, then proceed even if we don't get it
             setTimeout(() => {
-                prepareAndSendSMS();
+                prepareAndSendAlert();
             }, 2000);
         } else {
-            prepareAndSendSMS();
+            prepareAndSendAlert();
         }
     }
     
-    // Function to prepare and send SMS
-    function prepareAndSendSMS() {
+    // Function to prepare and send alert
+    function prepareAndSendAlert() {
         // Get current time for the message
         const now = new Date();
         const currentTimeString = now.toLocaleString('en-IN');
@@ -314,23 +331,82 @@ document.addEventListener('DOMContentLoaded', function() {
         // Create message with all available information
         const message = `EMERGENCY SOS ALERT!\n\nI need help! This is an emergency alert.\n\nMy Location:\n${locationInfo}${mapLink}\n\nTime: ${currentTimeString}\nBattery: ${userBattery || "Status not available"}\nIP: ${userIP || "Unable to fetch"}`;
         
-        // Send SMS to all family contacts (one at a time)
-        if (familyContacts.length > 0) {
-            // Start with the first contact
-            sendSMSToContact(0, message);
-        }
+        // Show sharing options
+        showSharingOptions(message);
     }
     
-    // Function to send SMS to a specific contact
-    function sendSMSToContact(index, message) {
-        if (index >= familyContacts.length) {
-            // All messages have been prepared
-            statusMessage.textContent = "Emergency alert prepared! Please send the SMS messages.";
-            statusMessage.classList.add('success');
+    // Function to show sharing options
+    function showSharingOptions(message) {
+        // Create a modal or dialog for sharing options
+        const modal = document.createElement('div');
+        modal.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        `;
+        
+        const modalContent = document.createElement('div');
+        modalContent.style.cssText = `
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 80%;
+            width: 300px;
+            text-align: center;
+        `;
+        
+        modalContent.innerHTML = `
+            <h3 style="margin-bottom: 15px;">Send Emergency Alert</h3>
+            <p style="margin-bottom: 20px;">Choose how to send your emergency alert:</p>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <button id="sendSMSBtn" class="update-location-btn" style="margin: 5px 0;">
+                    <i class="fas fa-sms"></i> Send via SMS
+                </button>
+                <button id="sendWhatsAppBtn" class="update-location-btn" style="margin: 5px 0; background-color: #25D366; color: white;">
+                    <i class="fab fa-whatsapp"></i> Send via WhatsApp
+                </button>
+                <button id="cancelBtn" class="update-location-btn" style="margin: 5px 0; background-color: #f44336; color: white;">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+            </div>
+        `;
+        
+        modal.appendChild(modalContent);
+        document.body.appendChild(modal);
+        
+        // Add event listeners
+        document.getElementById('sendSMSBtn').addEventListener('click', function() {
+            document.body.removeChild(modal);
+            sendViaSMS(message);
+        });
+        
+        document.getElementById('sendWhatsAppBtn').addEventListener('click', function() {
+            document.body.removeChild(modal);
+            sendViaWhatsApp(message);
+        });
+        
+        document.getElementById('cancelBtn').addEventListener('click', function() {
+            document.body.removeChild(modal);
+            statusMessage.classList.remove('active');
+        });
+    }
+    
+    // Function to send via SMS
+    function sendViaSMS(message) {
+        if (familyContacts.length === 0) {
+            showStatusMessage('No emergency contacts available', 'error');
             return;
         }
         
-        const contact = familyContacts[index];
+        // Send SMS to the first contact
+        const contact = familyContacts[0];
         const formattedNumber = formatPhoneNumberForSMS(contact);
         
         // Create SMS URL with properly encoded message
@@ -339,13 +415,27 @@ document.addEventListener('DOMContentLoaded', function() {
         // Open SMS app
         window.open(smsUrl, '_self');
         
-        // Show status message for this contact
-        statusMessage.textContent = `Preparing SMS for contact ${index + 1} of ${familyContacts.length}...`;
+        showStatusMessage('SMS app opened with emergency alert', 'success');
+    }
+    
+    // Function to send via WhatsApp
+    function sendViaWhatsApp(message) {
+        if (familyContacts.length === 0) {
+            showStatusMessage('No emergency contacts available', 'error');
+            return;
+        }
         
-        // Note: In a real application, we would wait for confirmation that the SMS was sent
-        // before moving to the next contact. However, due to browser limitations,
-        // we can't automatically detect when an SMS is sent.
-        // For this demo, we'll just prepare one SMS at a time.
+        // Send WhatsApp message to the first contact
+        const contact = familyContacts[0];
+        const formattedNumber = formatPhoneNumberForWhatsApp(contact);
+        
+        // Create WhatsApp URL with properly encoded message
+        const whatsappUrl = `https://wa.me/${formattedNumber}?text=${encodeURIComponent(message)}`;
+        
+        // Open WhatsApp
+        window.open(whatsappUrl, '_blank');
+        
+        showStatusMessage('WhatsApp opened with emergency alert', 'success');
     }
     
     // Function to format phone number for SMS
@@ -360,9 +450,35 @@ document.addEventListener('DOMContentLoaded', function() {
         return number;
     }
     
+    // Function to format phone number for WhatsApp
+    function formatPhoneNumberForWhatsApp(number) {
+        // For WhatsApp, we need the number in international format without the +
+        if (number.length === 10) {
+            return `91${number}`;
+        } else if (number.length > 10 && number.startsWith('91')) {
+            return number;
+        } else if (number.length > 10 && number.startsWith('0')) {
+            return `91${number.substring(1)}`;
+        }
+        return number;
+    }
+    
     // Function to make a call
     function makeCall(number) {
-        window.open(`tel:${number}`, '_self');
+        // Format the number for tel: protocol
+        let formattedNumber = number;
+        if (number.length === 10) {
+            formattedNumber = `+91${number}`;
+        } else if (number.length > 10 && !number.startsWith('+')) {
+            if (number.startsWith('91')) {
+                formattedNumber = `+${number}`;
+            } else if (number.startsWith('0')) {
+                formattedNumber = `+91${number.substring(1)}`;
+            }
+        }
+        
+        // Open dialer
+        window.open(`tel:${formattedNumber}`, '_self');
     }
     
     // Function to toggle sound on/off
@@ -410,21 +526,32 @@ document.addEventListener('DOMContentLoaded', function() {
         // Three long beeps
         currentTime += beepInterval; // Extra pause between groups
         for (let i = 0; i < 3; i++) {
-            oscillator.start(currentTime);
-            oscillator.stop(currentTime + longBeepDuration);
+            oscillator.start(start);
+            oscillator.stop(start + duration);
+        }
+        
+        // Schedule beeps respecting the pattern ... --- ...
+        for (let i = 0; i < 3; i++) {
+            scheduleBeep(currentTime, shortBeepDuration);
+            currentTime += shortBeepDuration + beepInterval;
+        }
+        
+        currentTime += beepInterval;
+        
+        for (let i = 0; i < 3; i++) {
+            scheduleBeep(currentTime, longBeepDuration);
             currentTime += longBeepDuration + beepInterval;
         }
         
-        // Three short beeps
-        currentTime += beepInterval; // Extra pause between groups
+        currentTime += beepInterval;
+        
         for (let i = 0; i < 3; i++) {
-            oscillator.start(currentTime);
-            oscillator.stop(currentTime + shortBeepDuration);
+            scheduleBeep(currentTime, shortBeepDuration);
             currentTime += shortBeepDuration + beepInterval;
         }
-    }
-    
-    // Function to show status message
+}
+
+                 // Function to show status message
     function showStatusMessage(message, type) {
         statusMessage.textContent = message;
         statusMessage.classList.remove('success', 'error');
@@ -436,9 +563,8 @@ document.addEventListener('DOMContentLoaded', function() {
             statusMessage.classList.add('error');
         }
         
-        // Auto-hide after 3 seconds
         setTimeout(() => {
             statusMessage.classList.remove('active');
         }, 3000);
     }
-});
+});         
