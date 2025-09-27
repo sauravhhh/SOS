@@ -83,6 +83,20 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
+        // Add WhatsApp share button for all contacts
+        const whatsappShareBtn = document.createElement('li');
+        whatsappShareBtn.className = 'contact-item';
+        whatsappShareBtn.innerHTML = `
+            <button class="whatsapp-share-btn" id="whatsappShareAllBtn">
+                <i class="fab fa-whatsapp"></i>
+                Share Emergency Alert with All Contacts via WhatsApp
+            </button>
+        `;
+        familyContactList.appendChild(whatsappShareBtn);
+        
+        // Add event listener to WhatsApp share button
+        document.getElementById('whatsappShareAllBtn').addEventListener('click', shareEmergencyAlertWithAll);
+        
         familyContacts.forEach((contact, index) => {
             const contactItem = document.createElement('li');
             contactItem.className = 'contact-item';
@@ -100,6 +114,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     <button class="call-button" data-action="call" data-number="${contact}">
                         <i class="fas fa-phone"></i>
                     </button>
+                    <button class="whatsapp-button" data-action="whatsapp" data-number="${contact}">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
                     <button class="call-button" data-action="delete" data-index="${index}">
                         <i class="fas fa-trash"></i>
                     </button>
@@ -115,12 +132,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to add event listeners to contact buttons
     function addContactButtonEventListeners() {
         // Remove existing event listeners to avoid duplicates
-        document.querySelectorAll('.call-button').forEach(button => {
+        document.querySelectorAll('.call-button, .whatsapp-button').forEach(button => {
             button.removeEventListener('click', handleContactButtonClick);
         });
         
         // Add new event listeners
-        document.querySelectorAll('.call-button').forEach(button => {
+        document.querySelectorAll('.call-button, .whatsapp-button').forEach(button => {
             button.addEventListener('click', handleContactButtonClick);
         });
     }
@@ -136,10 +153,79 @@ document.addEventListener('DOMContentLoaded', function() {
         if (action === 'call') {
             const number = button.getAttribute('data-number');
             makeCall(number);
+        } else if (action === 'whatsapp') {
+            const number = button.getAttribute('data-number');
+            shareWithContact(number);
         } else if (action === 'delete') {
             const index = parseInt(button.getAttribute('data-index'));
             removeFamilyContact(index);
         }
+    }
+    
+    // Function to share emergency alert with a specific contact via WhatsApp
+    function shareWithContact(number) {
+        // Get current time for the message
+        const now = new Date();
+        const currentTimeString = now.toLocaleString('en-IN');
+        
+        // Prepare location information
+        let locationInfo = "Location: Unable to determine";
+        let mapLink = "";
+        
+        if (userLocation) {
+            locationInfo = `Latitude: ${userLocation.lat}\nLongitude: ${userLocation.lon}\nAccuracy: ${Math.round(userLocation.accuracy)}m`;
+            mapLink = `\n\nMap: https://maps.google.com/?q=${userLocation.lat},${userLocation.lon}`;
+        }
+        
+        // Create message with all available information
+        const message = `EMERGENCY SOS ALERT!\n\nI need help! This is an emergency alert.\n\nMy Location:\n${locationInfo}${mapLink}\n\nTime: ${currentTimeString}\nBattery: ${userBattery || "Status not available"}\nIP: ${userIP || "Unable to fetch"}`;
+        
+        // Format number for WhatsApp
+        const formattedNumber = formatPhoneNumberForWhatsApp(number);
+        
+        // Create WhatsApp URL with properly encoded message
+        const whatsappUrl = `https://wa.me/${formattedNumber}?text=${encodeURIComponent(message)}`;
+        
+        // Open WhatsApp
+        window.open(whatsappUrl, '_blank');
+        
+        showStatusMessage('WhatsApp opened with emergency alert', 'success');
+    }
+    
+    // Function to share emergency alert with all contacts via WhatsApp
+    function shareEmergencyAlertWithAll() {
+        if (familyContacts.length === 0) {
+            showStatusMessage('No emergency contacts available', 'error');
+            return;
+        }
+        
+        // Get current time for the message
+        const now = new Date();
+        const currentTimeString = now.toLocaleString('en-IN');
+        
+        // Prepare location information
+        let locationInfo = "Location: Unable to determine";
+        let mapLink = "";
+        
+        if (userLocation) {
+            locationInfo = `Latitude: ${userLocation.lat}\nLongitude: ${userLocation.lon}\nAccuracy: ${Math.round(userLocation.accuracy)}m`;
+            mapLink = `\n\nMap: https://maps.google.com/?q=${userLocation.lat},${userLocation.lon}`;
+        }
+        
+        // Create message with all available information
+        const message = `EMERGENCY SOS ALERT!\n\nI need help! This is an emergency alert.\n\nMy Location:\n${locationInfo}${mapLink}\n\nTime: ${currentTimeString}\nBattery: ${userBattery || "Status not available"}\nIP: ${userIP || "Unable to fetch"}`;
+        
+        // Open WhatsApp with the first contact
+        const firstContact = familyContacts[0];
+        const formattedNumber = formatPhoneNumberForWhatsApp(firstContact);
+        
+        // Create WhatsApp URL with properly encoded message
+        const whatsappUrl = `https://wa.me/${formattedNumber}?text=${encodeURIComponent(message)}`;
+        
+        // Open WhatsApp
+        window.open(whatsappUrl, '_blank');
+        
+        showStatusMessage(`WhatsApp opened with emergency alert for ${familyContacts.length} contacts. Please forward to other contacts if needed.`, 'success');
     }
     
     // Function to add family contact
@@ -412,8 +498,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // Create SMS URL with properly encoded message
         const smsUrl = `sms:${formattedNumber}?body=${encodeURIComponent(message)}`;
         
-        // Open SMS app
-        window.open(smsUrl, '_self');
+        // Open SMS
+    window.open(smsUrl, '_self');
         
         showStatusMessage('SMS app opened with emergency alert', 'success');
     }
@@ -442,7 +528,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function formatPhoneNumberForSMS(number) {
         if (number.length === 10) {
             return `+91${number}`;
-        } else if (number.length > 10 && number.startsWith('91')) {
+            } else if (number.length > 10 && number.startsWith('91')) {
             return `+${number}`;
         } else if (number.length > 10 && number.startsWith('0')) {
             return `+91${number.substring(1)}`;
@@ -457,17 +543,22 @@ document.addEventListener('DOMContentLoaded', function() {
             return `91${number}`;
         } else if (number.length > 10 && number.startsWith('91')) {
             return number;
-        } else if (number.length > 10 && number.startsWith('0')) {
+            } else if (number.length > 10 && number.startsWith('0')) {
             return `91${number.substring(1)}`;
         }
         return number;
     }
-    
-    // Function to make a call
+        // Function to make a call
     function makeCall(number) {
         // Format the number for tel: protocol
         let formattedNumber = number;
-        if (number.length === 10) {
+        
+        // For emergency services, use the number as is
+        if (['112', '100', '108', '102', '101', '1091', '1098'].includes(number)) {
+            formattedNumber = number;
+        } 
+        // For regular numbers, add country code if needed
+        else if (number.length === 10) {
             formattedNumber = `+91${number}`;
         } else if (number.length > 10 && !number.startsWith('+')) {
             if (number.startsWith('91')) {
@@ -526,32 +617,21 @@ document.addEventListener('DOMContentLoaded', function() {
         // Three long beeps
         currentTime += beepInterval; // Extra pause between groups
         for (let i = 0; i < 3; i++) {
-            oscillator.start(start);
-            oscillator.stop(start + duration);
-        }
-        
-        // Schedule beeps respecting the pattern ... --- ...
-        for (let i = 0; i < 3; i++) {
-            scheduleBeep(currentTime, shortBeepDuration);
-            currentTime += shortBeepDuration + beepInterval;
-        }
-        
-        currentTime += beepInterval;
-        
-        for (let i = 0; i < 3; i++) {
-            scheduleBeep(currentTime, longBeepDuration);
+            oscillator.start(currentTime);
+            oscillator.stop(currentTime + longBeepDuration);
             currentTime += longBeepDuration + beepInterval;
         }
         
-        currentTime += beepInterval;
-        
+        // Three short beeps
+        currentTime += beepInterval; // Extra pause between groups
         for (let i = 0; i < 3; i++) {
-            scheduleBeep(currentTime, shortBeepDuration);
+            oscillator.start(currentTime);
+            oscillator.stop(currentTime + shortBeepDuration);
             currentTime += shortBeepDuration + beepInterval;
         }
-}
-
-                 // Function to show status message
+    }
+    
+    // Function to show status message
     function showStatusMessage(message, type) {
         statusMessage.textContent = message;
         statusMessage.classList.remove('success', 'error');
@@ -563,8 +643,12 @@ document.addEventListener('DOMContentLoaded', function() {
             statusMessage.classList.add('error');
         }
         
+        // Auto-hide after 3 seconds
         setTimeout(() => {
             statusMessage.classList.remove('active');
         }, 3000);
     }
-});         
+    
+    // Global function for emergency service calls (to handle inline onclick)
+    window.makeCall = makeCall;
+});
