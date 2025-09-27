@@ -83,20 +83,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        // Add WhatsApp share button for all contacts
-        const whatsappShareBtn = document.createElement('li');
-        whatsappShareBtn.className = 'contact-item';
-        whatsappShareBtn.innerHTML = `
-            <button class="whatsapp-share-btn" id="whatsappShareAllBtn">
-                <i class="fab fa-whatsapp"></i>
-                Share Emergency Alert with All Contacts via WhatsApp
-            </button>
-        `;
-        familyContactList.appendChild(whatsappShareBtn);
-        
-        // Add event listener to WhatsApp share button
-        document.getElementById('whatsappShareAllBtn').addEventListener('click', shareEmergencyAlertWithAll);
-        
         familyContacts.forEach((contact, index) => {
             const contactItem = document.createElement('li');
             contactItem.className = 'contact-item';
@@ -113,9 +99,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div>
                     <button class="call-button" data-action="call" data-number="${contact}">
                         <i class="fas fa-phone"></i>
-                    </button>
-                    <button class="whatsapp-button" data-action="whatsapp" data-number="${contact}">
-                        <i class="fab fa-whatsapp"></i>
                     </button>
                     <button class="call-button" data-action="delete" data-index="${index}">
                         <i class="fas fa-trash"></i>
@@ -151,16 +134,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const action = button.getAttribute('data-action');
         
         if (action === 'call') {
-            const number = button.getAttribute('data-number');
-            makeCall(number);
-        } else if (action === 'whatsapp') {
-            const number = button.getAttribute('data-number');
-            shareWithContact(number);
-        } else if (action === 'delete') {
-            const index = parseInt(button.getAttribute('data-index'));
-            removeFamilyContact(index);
+    const number = button.getAttribute('data-number');
+    makeCall(number);
+} else if (action === 'delete') {
+    const index = parseInt(button.getAttribute('data-index'));
+    removeFamilyContact(index);
         }
-    }
     
     // Function to share emergency alert with a specific contact via WhatsApp
     function shareWithContact(number) {
