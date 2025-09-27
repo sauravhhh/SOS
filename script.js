@@ -97,16 +97,34 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 </div>
                 <div>
-                    <button class="call-button" onclick="makeCall('${contact}')" style="margin-right: 5px;">
+                    <button class="call-button" data-action="call" data-index="${index}" data-number="${contact}">
                         <i class="fas fa-phone"></i>
                     </button>
-                    <button class="call-button" onclick="removeFamilyContact(${index})">
+                    <button class="call-button" data-action="delete" data-index="${index}">
                         <i class="fas fa-trash"></i>
                     </button>
                 </div>
             `;
             familyContactList.appendChild(contactItem);
         });
+        
+        // Add event listeners to the dynamically created buttons
+        document.querySelectorAll('.call-button').forEach(button => {
+            button.addEventListener('click', handleContactButtonClick);
+        });
+    }
+    
+    // Function to handle contact button clicks
+    function handleContactButtonClick(event) {
+        const action = event.currentTarget.getAttribute('data-action');
+        const index = parseInt(event.currentTarget.getAttribute('data-index'));
+        
+        if (action === 'call') {
+            const number = event.currentTarget.getAttribute('data-number');
+            makeCall(number);
+        } else if (action === 'delete') {
+            removeFamilyContact(index);
+        }
     }
     
     // Function to add family contact
