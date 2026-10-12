@@ -13,68 +13,85 @@
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
     background:#f4f5f7; color:#1c1c1e; min-height:100vh; min-height:100dvh;}
-  header{background:#c62828; color:#fff; padding:20px 16px 16px; text-align:center;
+  header{background:#c62828; color:#fff; padding:18px 16px 14px; text-align:center;
     position:sticky; top:0; z-index:10; box-shadow:0 2px 10px rgba(0,0,0,.2);}
   header .sos{display:inline-flex; align-items:center; gap:10px;}
-  header .badge{width:40px; height:40px; border-radius:10px; background:#fff;
-    display:flex; align-items:center; justify-content:center;
-    font-size:24px; font-weight:800; color:#c62828;}
-  header h1{font-size:24px; font-weight:800; letter-spacing:1px;}
-  header p{font-size:12.5px; opacity:.92; margin-top:4px;}
+  header .badge{width:38px; height:38px; border-radius:10px; background:#fff;
+    display:flex; align-items:center; justify-content:center;}
+  header h1{font-size:23px; font-weight:800; letter-spacing:2px;}
+  header p{font-size:12px; opacity:.92; margin-top:3px; letter-spacing:.3px;}
   .banner{margin:14px 14px 0; background:#fff; border-radius:14px; padding:14px 16px;
     display:flex; align-items:center; justify-content:space-between; gap:12px;
     box-shadow:0 2px 8px rgba(0,0,0,.08); border-left:5px solid #c62828;}
   .banner .t{font-size:14px; font-weight:700;}
   .banner .s{font-size:12px; color:#666; margin-top:2px;}
   .call-big{display:inline-flex; align-items:center; gap:8px; background:#c62828; color:#fff;
-    text-decoration:none; font-weight:800; font-size:17px; padding:12px 22px; border-radius:999px;
+    text-decoration:none; font-weight:800; font-size:17px; padding:12px 20px; border-radius:999px;
     box-shadow:0 3px 10px rgba(198,40,40,.4); white-space:nowrap;}
   .call-big:active{transform:scale(.96);}
-  .chips{position:sticky; top:104px; z-index:9; background:#f4f5f7; padding:10px 14px;
-    display:flex; gap:8px; overflow-x:auto; -webkit-overflow-scrolling:touch;}
+  .chips{position:sticky; top:100px; z-index:9; background:#f4f5f7; padding:10px 14px;
+    display:flex; gap:8px; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none;}
+  .chips::-webkit-scrollbar{display:none;}
   .chip{flex:0 0 auto; border:1.5px solid #d7d9de; background:#fff; color:#444;
     font-size:13px; font-weight:600; padding:8px 16px; border-radius:999px; cursor:pointer;}
   .chip.on{background:#c62828; border-color:#c62828; color:#fff;}
-  main{padding:6px 14px 30px; max-width:640px; margin:0 auto;}
-  .card{background:#fff; border-radius:14px; padding:14px 16px; margin-top:12px;
-    box-shadow:0 2px 8px rgba(0,0,0,.07); display:flex; align-items:center; gap:12px;}
-  .card .ic{flex:0 0 44px; width:44px; height:44px; border-radius:12px;
-    display:flex; align-items:center; justify-content:center; font-size:20px;}
-  .ic.helpline{background:#ffebee;} .ic.hospital{background:#e3f2fd;}
-  .ic.fire{background:#fff3e0;} .ic.police{background:#e8eaf6;}
+  main{padding:6px 14px 110px; max-width:640px; margin:0 auto;}
+  .card{background:#fff; border-radius:16px; padding:14px 14px 14px 16px; margin-top:12px;
+    box-shadow:0 2px 10px rgba(0,0,0,.07); display:flex; align-items:center; gap:13px;}
+  .card .ic{flex:0 0 46px; width:46px; height:46px; border-radius:14px;
+    display:flex; align-items:center; justify-content:center;}
+  .ic.helpline{background:#ffebee; color:#c62828;}
+  .ic.hospital{background:#e3f2fd; color:#1565c0;}
+  .ic.fire{background:#fff3e0; color:#e65100;}
+  .ic.police{background:#e8eaf6; color:#283593;}
   .card .info{flex:1; min-width:0;}
-  .card .name{font-size:15px; font-weight:700;}
-  .card .sub{font-size:12px; color:#777; margin-top:2px;}
-  .card .num{font-size:14px; font-weight:700; color:#c62828; margin-top:4px;
-    font-variant-numeric:tabular-nums; letter-spacing:.5px;}
-  .call{display:inline-flex; align-items:center; justify-content:center; gap:6px;
+  .card .name{font-size:15px; font-weight:700; letter-spacing:.1px;}
+  .card .sub{font-size:12px; color:#8a8f98; margin-top:3px;}
+  .card .num{font-size:16px; font-weight:800; color:#1c1c1e; margin-top:5px;
+    font-variant-numeric:tabular-nums; letter-spacing:.6px;}
+  .call{display:inline-flex; align-items:center; justify-content:center; gap:7px;
     background:#c62828; color:#fff; text-decoration:none; font-weight:700; font-size:14px;
-    padding:11px 18px; border-radius:999px; white-space:nowrap;
+    padding:12px 20px; border-radius:999px; white-space:nowrap;
     box-shadow:0 2px 8px rgba(198,40,40,.35);}
   .call:active{transform:scale(.95);}
   .call.ghost{background:#fff; color:#c62828; border:1.5px solid #c62828; box-shadow:none;
-    padding:9px 14px; margin-top:6px; font-size:13px;}
-  .btns{display:flex; flex-direction:column; gap:2px; align-items:flex-end;}
+    padding:8px 14px; margin-top:8px; font-size:12.5px;}
+  .btns{display:flex; flex-direction:column; align-items:flex-end;}
+  .fab{position:fixed; right:18px; bottom:22px; z-index:20; width:62px; height:62px;
+    border-radius:50%; background:#c62828; color:#fff; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; text-decoration:none;
+    box-shadow:0 6px 18px rgba(198,40,40,.5);}
+  .fab:active{transform:scale(.93);}
+  .fab span{font-size:9px; font-weight:800; letter-spacing:.5px; margin-top:1px;}
   .empty{text-align:center; color:#888; padding:40px 0; font-size:14px; display:none;}
-  footer{text-align:center; font-size:11.5px; color:#999; padding:18px 20px 30px; line-height:1.6;}
+  footer{text-align:center; font-size:11.5px; color:#999; padding:6px 20px 30px; line-height:1.6;}
   footer a{color:#c62828; text-decoration:none;}
 </style>
 </head>
 <body>
 <header>
-  <div class="sos"><span class="badge">+</span><h1>SOS</h1></div>
+  <div class="sos"><span class="badge">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c62828" stroke-width="3.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+  </span><h1>SOS</h1></div>
   <p>Guwahati Emergency Directory — tap to call</p>
 </header>
 
 <div class="banner">
   <div><div class="t">In an emergency, call 112</div>
   <div class="s">Single number for police, fire &amp; medical</div></div>
-  <a class="call-big" href="tel:112">📞 112</a>
+  <a class="call-big" href="tel:112">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+    112</a>
 </div>
 
 <div class="chips" id="chips"></div>
 <main id="list"></main>
 <div class="empty" id="empty">No contacts in this category.</div>
+
+<a class="fab" href="tel:112" aria-label="Call 112">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+  <span>112</span>
+</a>
 
 <footer>
   Numbers verified October 2026 from official hospital &amp; government sources.<br>
@@ -85,22 +102,29 @@
 <script>
 (function(){
   "use strict";
+  var IC = {
+    helpline: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>',
+    hospital: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+    fire: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>',
+    police: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>'
+  };
+  var PHONE = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>';
   var DATA = [
-    {cat:"helpline", icon:"🚨", name:"National Emergency", sub:"Police • Fire • Medical — one number", num:"112"},
-    {cat:"police", icon:"👮", name:"Police", sub:"Guwahati City Police", num:"100"},
-    {cat:"fire", icon:"🔥", name:"Fire Brigade", sub:"Assam Fire & Emergency Services", num:"101"},
-    {cat:"helpline", icon:"🚑", name:"Ambulance — 108", sub:"Assam integrated medical emergency", num:"108"},
-    {cat:"helpline", icon:"⛑️", name:"Disaster Helpline (ASDMA)", sub:"Toll-free • Govt. of Assam", num:"1070"},
-    {cat:"hospital", icon:"🏥", name:"GMCH Emergency", sub:"Govt. • Bhangagarh • 24×7", num:"0361-2452244"},
-    {cat:"hospital", icon:"🏥", name:"GNRC Helpline", sub:"Toll-free • Dispur / Sixmile • 24×7", num:"1800-345-0022"},
-    {cat:"hospital", icon:"🚑", name:"GNRC Ambulance", sub:"Free ambulance • 24×7", num:"1800-345-0011"},
-    {cat:"hospital", icon:"🏥", name:"Hayat Hospital", sub:"Kahilipara • 24×7", num:"80110-03111", num2:"88110-00123"},
-    {cat:"hospital", icon:"🏥", name:"Down Town Hospital", sub:"GS Road, Dispur • 24×7", num:"98641-01111"},
-    {cat:"hospital", icon:"🏥", name:"Nemcare Hospital", sub:"Bhangagarh • Heart & multispeciality", num:"0361-2455906"},
-    {cat:"fire", icon:"🧯", name:"Fire HQ Control Room", sub:"Panbazar • 24×7", num:"0361-2735935"},
-    {cat:"fire", icon:"🧯", name:"Panbazar Fire Station", sub:"A.T. Road • 24×7", num:"0361-2637680"},
-    {cat:"fire", icon:"🧯", name:"Dispur Fire Station", sub:"G.S. Road • 24×7", num:"0361-2260221"},
-    {cat:"police", icon:"🚔", name:"Commissioner of Police", sub:"Guwahati Commissionerate", num:"0361-2540278"}
+    {cat:"helpline", name:"National Emergency", sub:"Police • Fire • Medical — one number", num:"112"},
+    {cat:"police", name:"Police", sub:"Guwahati City Police", num:"100"},
+    {cat:"fire", name:"Fire Brigade", sub:"Assam Fire & Emergency Services", num:"101"},
+    {cat:"helpline", name:"Ambulance — 108", sub:"Assam integrated medical emergency", num:"108"},
+    {cat:"helpline", name:"Disaster Helpline (ASDMA)", sub:"Toll-free • Govt. of Assam", num:"1070"},
+    {cat:"hospital", name:"GMCH Emergency", sub:"Govt. • Bhangagarh • 24×7", num:"0361-2452244"},
+    {cat:"hospital", name:"GNRC Helpline", sub:"Toll-free • Dispur / Sixmile • 24×7", num:"1800-345-0022"},
+    {cat:"hospital", name:"GNRC Ambulance", sub:"Free ambulance • 24×7", num:"1800-345-0011"},
+    {cat:"hospital", name:"Hayat Hospital", sub:"Kahilipara • 24×7", num:"80110-03111", num2:"88110-00123"},
+    {cat:"hospital", name:"Down Town Hospital", sub:"GS Road, Dispur • 24×7", num:"98641-01111"},
+    {cat:"hospital", name:"Nemcare Hospital", sub:"Bhangagarh • Heart & multispeciality", num:"0361-2455906"},
+    {cat:"fire", name:"Fire HQ Control Room", sub:"Panbazar • 24×7", num:"0361-2735935"},
+    {cat:"fire", name:"Panbazar Fire Station", sub:"A.T. Road • 24×7", num:"0361-2637680"},
+    {cat:"fire", name:"Dispur Fire Station", sub:"G.S. Road • 24×7", num:"0361-2260221"},
+    {cat:"police", name:"Commissioner of Police", sub:"Guwahati Commissionerate", num:"0361-2540278"}
   ];
   var CATS = [["all","All"],["helpline","Helplines"],["hospital","Hospitals"],["fire","Fire"],["police","Police"]];
   var cur = "all";
@@ -108,8 +132,6 @@
       listEl = document.getElementById('list'),
       emptyEl = document.getElementById('empty');
 
-  function tel(n){ return "tel:+" + n.replace(/[^0-9]/g, "").replace(/^91(?=\d{10}$)/, "91"); }
-  // simpler: keep domestic format, tel: handles it
   function telHref(n){ return "tel:" + n.replace(/[^0-9]/g, ""); }
 
   function render(){
@@ -128,10 +150,10 @@
       n++;
       var card = document.createElement("div");
       card.className = "card";
-      var btns = '<a class="call" href="' + telHref(d.num) + '">📞 Call</a>';
+      var btns = '<a class="call" href="' + telHref(d.num) + '">' + PHONE + 'Call</a>';
       if (d.num2) btns += '<a class="call ghost" href="' + telHref(d.num2) + '">' + d.num2 + '</a>';
       card.innerHTML =
-        '<div class="ic ' + d.cat + '">' + d.icon + '</div>' +
+        '<div class="ic ' + d.cat + '">' + IC[d.cat] + '</div>' +
         '<div class="info"><div class="name">' + d.name + '</div>' +
         '<div class="sub">' + d.sub + '</div>' +
         '<div class="num">' + d.num + '</div></div>' +
